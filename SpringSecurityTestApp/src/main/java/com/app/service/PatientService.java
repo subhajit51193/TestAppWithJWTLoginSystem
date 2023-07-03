@@ -7,7 +7,11 @@ import com.app.model.Patient;
 
 public interface PatientService {
 
-	public Patient addPatient(Patient patient);
+	public Patient registerPatient(Patient patient);
+	
+	public Patient getPatientDetailsByEmail(String email)throws PatientException;
+	
+	public Patient getMyDetails()throws PatientException;
 	
 	public Patient getpatientById(Integer patientId)throws PatientException;
 	
