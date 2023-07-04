@@ -26,12 +26,12 @@ public class AdminController {
 	@Autowired
 	private PatientService patientService;
 	
-	@PostMapping("/add")
-	public ResponseEntity<Patient> addPatienthandler(@RequestBody Patient patient){
-		
-		Patient newPatient = patientService.registerPatient(patient);
-		return new ResponseEntity<Patient>(newPatient,HttpStatus.CREATED);
-	}
+//	@PostMapping("/add")
+//	public ResponseEntity<Patient> addPatienthandler(@RequestBody Patient patient){
+//		
+//		Patient newPatient = patientService.registerPatient(patient);
+//		return new ResponseEntity<Patient>(newPatient,HttpStatus.CREATED);
+//	}
 	@GetMapping("/{id}")
 	public ResponseEntity<Patient> getPatientDetailshandler(@PathVariable("id") Integer patientId) throws PatientException{
 		

@@ -52,10 +52,9 @@ public class AppConfig {
 		.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
 				.requestMatchers("/swagger-ui*/**","/v3/api-docs/**").permitAll()
 				.requestMatchers(HttpMethod.POST, "/patient/signUp").permitAll().anyRequest().authenticated())
-		.formLogin((formLogin) -> formLogin
-				.loginPage("/signIn"))
-		.httpBasic((httpBasic) -> httpBasic
-				.configure(http));
+		.formLogin()
+		.and()
+		.httpBasic();
 		return http.build();
 	}
 	
