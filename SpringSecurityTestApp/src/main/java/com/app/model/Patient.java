@@ -37,6 +37,6 @@ public class Patient {
 	private String address;
 	private String pincode;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer",fetch=FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "patient",fetch=FetchType.EAGER)
 	private List<Authority> authorities = new ArrayList<>();
 }

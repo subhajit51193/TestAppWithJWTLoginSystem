@@ -6,9 +6,11 @@ import java.util.Collections;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,71 +26,44 @@ import jakarta.servlet.http.HttpServletRequest;
 public class AppConfig {
 
 	@Bean
-	public SecurityFilterChain springSecurityConfiguration(HttpSecurity http) throws Exception {
-
+	public SecurityFilterChain springSecurityConfiguration(HttpSecurity http) throws Exception{
+		
 		http
-		.sessionManagement((sessionManagement) ->
-			sessionManagement
-				.sessionCreationPolicy((sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				)
-		)
-		.csrf(csrf -> csrf.disable())
-		.cors().configurationSource( new CorsConfigurationSource() {
+		.sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+		.csrf((csrf) -> csrf.disable())
+		.cors((cors) -> cors.configurationSource(new CorsConfigurationSource() {
 			
 			@Override
 			public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
 				
-				
-				
 				CorsConfiguration cfg = new CorsConfiguration();
-				
 				cfg.setAllowedOrigins(Collections.singletonList("*"));
-				//cfg.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:4500"));
-				//cfg.setAllowedMethods(Arrays.asList("GET", "POST","DELETE","PUT"));
 				cfg.setAllowedMethods(Collections.singletonList("*"));
 				cfg.setAllowCredentials(true);
 				cfg.setAllowedHeaders(Collections.singletonList("*"));
 				cfg.setExposedHeaders(Arrays.asList("Authorization"));
 				cfg.setMaxAge(3600L);
 				return cfg;
-				
-				
-				
 			}
-		})
+		}
+		))
 		.addFilterAfter(new JwtTokenGeneratorFilter(), BasicAuthenticationFilter.class)
 		.addFilterBefore(new JwtTokenValidatorFilter(), BasicAuthenticationFilter.class)
-		.authorizeHttpRequests()
-		.requestMatchers("/swagger-ui*/**","/v3/api-docs/**").permitAll()
-		.requestMatchers(HttpMethod.POST, "/customer/signUp")
-		.permitAll().anyRequest()
-		.authenticated()
-//		.anyRequest()
-//		.permitAll()
-		.and()
-		.formLogin()
-		.and()
-		.httpBasic();//end
-		
-		
-//		--------------------addition test
-//		.and().oauth2Login().successHandler(successHandler);//addition for future implementation if possible
-//		--------------------
-
+		.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
+				.requestMatchers("/swagger-ui*/**","/v3/api-docs/**").permitAll()
+				.requestMatchers(HttpMethod.POST, "/patient/signUp").permitAll().anyRequest().authenticated())
+		.formLogin((formLogin) -> formLogin
+				.loginPage("/signIn"))
+		.httpBasic((httpBasic) -> httpBasic
+				.configure(http));
 		return http.build();
-
 	}
-
-	private SessionCreationPolicy sessionCreationPolicy(SessionCreationPolicy stateless) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 
 		return new BCryptPasswordEncoder();
 
 	}
-
+	
 }
