@@ -20,7 +20,7 @@ import com.app.service.PatientService;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
-@RequestMapping("/patient")
+@RequestMapping("/admin")
 public class AdminController {
 
 	@Autowired
@@ -32,28 +32,29 @@ public class AdminController {
 //		Patient newPatient = patientService.registerPatient(patient);
 //		return new ResponseEntity<Patient>(newPatient,HttpStatus.CREATED);
 //	}
-	@GetMapping("/{id}")
+	@GetMapping("/getPatientDetails/{id}")
 	public ResponseEntity<Patient> getPatientDetailshandler(@PathVariable("id") Integer patientId) throws PatientException{
 		
 		Patient patient = patientService.getpatientById(patientId);
 		return new ResponseEntity<Patient>(patient,HttpStatus.OK);
 	}
-	@GetMapping("/all")
+	@GetMapping("getAllPatients/all")
 	public ResponseEntity<List<Patient>> getAllPatientsHandler()throws PatientException{
 		
 		List<Patient> list = patientService.getAllPatients();
 		return new ResponseEntity<List<Patient>>(list,HttpStatus.OK);
 	}
-	@PutMapping("/{id}")
+	@PutMapping("updatePatientDetails/{id}")
 	public ResponseEntity<Patient> updatePatientHandler(@RequestBody Patient patient,@PathVariable("id") Integer patientId)throws PatientException{
 		
 		Patient updated = patientService.updatePatient(patient, patientId);
 		return new ResponseEntity<Patient>(updated,HttpStatus.OK);
 	}
-	@DeleteMapping("/{id}")
+	@DeleteMapping("deletePatientDetails/{id}")
 	public ResponseEntity<Patient> deletePatientHandler(@PathVariable("id") Integer patientId)throws PatientException{
 		
-		Patient deletedPatient = patientService.deletePatient(patientId);
+		Patient foundPatient = patientService.getpatientById(patientId);
+		Patient deletedPatient = patientService.deletePatient(foundPatient);
 		return new ResponseEntity<Patient>(deletedPatient,HttpStatus.OK);
 	}
 }

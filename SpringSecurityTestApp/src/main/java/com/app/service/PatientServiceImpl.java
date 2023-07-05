@@ -19,7 +19,7 @@ public class PatientServiceImpl implements PatientService{
 	private PatientRepository patientRepository;
 	
 	@Override
-	public Patient registerPatient(Patient patient) {
+	public Patient registerPatient(Patient patient) throws PatientException {
 		
 		List<Authority> authorities= patient.getAuthorities();
 		
@@ -27,7 +27,13 @@ public class PatientServiceImpl implements PatientService{
 			authority.setPatient(patient);
 		}
 		
-		return patientRepository.save(patient);
+		Patient pt = patientRepository.save(patient);
+		if (pt != null) {
+			return pt;
+		}
+		else {
+			throw new PatientException("");
+		}
 	}
 
 	@Override
@@ -40,13 +46,19 @@ public class PatientServiceImpl implements PatientService{
 	public Patient getpatientById(Integer patientId) throws PatientException {
 		
 		Optional<Patient> opt = patientRepository.findById(patientId);
-		if (opt.isPresent()) {
-			Patient patient = opt.get();
-			return patient;
-		}
-		else {
+		if (opt == null) {
 			throw new PatientException("Not Found");
 		}
+		else {
+			if (opt.isPresent()) {
+				Patient patient = opt.get();
+				return patient;
+			}
+			else {
+				throw new PatientException("Not Found");
+			}
+		}
+		
 	}
 	
 	
@@ -95,16 +107,14 @@ public class PatientServiceImpl implements PatientService{
 	}
 
 	@Override
-	public Patient deletePatient(Integer patientId) throws PatientException {
+	public Patient deletePatient(Patient patient) throws PatientException {
 		
-		Optional<Patient> opt = patientRepository.findById(patientId);
-		if (opt.isPresent()) {
-			Patient patient = opt.get();
-			patientRepository.delete(patient);
-			return patient;
+		if (patient == null) {
+			throw new PatientException("Not found");
 		}
 		else {
-			throw new PatientException("Not Found");
+			patientRepository.delete(patient);
+			return patient;
 		}
 	}
 

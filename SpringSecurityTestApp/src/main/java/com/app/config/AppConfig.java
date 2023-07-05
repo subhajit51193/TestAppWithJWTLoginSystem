@@ -6,11 +6,9 @@ import java.util.Collections;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,8 +24,8 @@ import jakarta.servlet.http.HttpServletRequest;
 public class AppConfig {
 
 	@Bean
-	public SecurityFilterChain springSecurityConfiguration(HttpSecurity http) throws Exception{
-		
+	public SecurityFilterChain springSecurityConfiguration(HttpSecurity http) throws Exception {
+
 		http
 		.sessionManagement((sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 		.csrf((csrf) -> csrf.disable())
@@ -56,13 +54,14 @@ public class AppConfig {
 		.and()
 		.httpBasic();
 		return http.build();
+
 	}
-	
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 
 		return new BCryptPasswordEncoder();
 
 	}
-	
+
 }

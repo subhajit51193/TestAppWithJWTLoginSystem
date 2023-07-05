@@ -55,7 +55,9 @@ public class PatientController {
         "name": "ram",
         "email": "ram@gmail.com",
         "password": "1234",
+        "contactNo" "7894561230"
         "address": "delhi",
+        "pincode": "700056"
         "authorities":[
             {
                 "name": "ROLE_USER"
@@ -71,7 +73,7 @@ public class PatientController {
 	*/
 	
 	@PostMapping("/signUp")
-	public ResponseEntity<Patient> savePatientHandler(@RequestBody Patient patient){
+	public ResponseEntity<Patient> savePatientHandler(@RequestBody Patient patient) throws PatientException{
 
 		
 		patient.setPassword(passwordEncoder.encode(patient.getPassword()));
@@ -82,7 +84,7 @@ public class PatientController {
 		
 	}
 	
-	@GetMapping("/getCustomer/{email}")
+	@GetMapping("/getPatient/{email}")
 	public ResponseEntity<Patient> getPatientByEmailHandler(@PathVariable("email") String email) throws PatientException{
 		
 		
@@ -91,11 +93,12 @@ public class PatientController {
 		return new ResponseEntity<>(patient,HttpStatus.ACCEPTED);
 		
 	}
-	
-	
-//	-------------------------------------------------------------------------------
-//	-------------------------------------------------------------------------------
-//	-------------------------------------------------------------------------------
+	@GetMapping("/getMyDetails")
+	public ResponseEntity<Patient> getMyDetails() throws PatientException{
+		
+		Patient myDetails = patientService.getMyDetails();
+		return new ResponseEntity<Patient>(myDetails,HttpStatus.OK);
+	}
 	
 	
 }
