@@ -17,7 +17,7 @@ public interface PatientService {
 	
 	public List<Patient> getAllPatients()throws PatientException;
 	
-	public Patient updatePatient(Patient patient,Integer patientId)throws PatientException;
+	public Patient updatePatient(Patient patient)throws PatientException;
 	
 	public Patient deletePatient(Patient patient)throws PatientException;
 }

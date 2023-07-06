@@ -89,20 +89,15 @@ public class PatientServiceImpl implements PatientService{
 	}
 
 	@Override
-	public Patient updatePatient(Patient patient, Integer patientId) throws PatientException {
-		
-		Optional<Patient> opt = patientRepository.findById(patientId);
-		if (opt.isPresent()) {
-			Patient foundPatient = opt.get();
-			foundPatient.setName(patient.getName());
-			foundPatient.setContactNo(patient.getContactNo());
-			foundPatient.setAddress(patient.getAddress());
-			foundPatient.setPincode(patient.getPincode());
-			return patientRepository.save(foundPatient);
-			
+	public Patient updatePatient(Patient patient) throws PatientException {
+	
+		Optional<Patient> opt = patientRepository.findById(patient.getId());
+		if (opt.isEmpty()) {
+			throw new PatientException("Not found");
 		}
 		else {
-			throw new PatientException("Not Found");
+			Patient updated = patientRepository.save(patient);
+			return updated;
 		}
 	}
 

@@ -32,25 +32,25 @@ public class AdminController {
 //		Patient newPatient = patientService.registerPatient(patient);
 //		return new ResponseEntity<Patient>(newPatient,HttpStatus.CREATED);
 //	}
-	@GetMapping("/getPatientDetails/{id}")
+	@GetMapping("/getPatientDetails")
 	public ResponseEntity<Patient> getPatientDetailshandler(@PathVariable("id") Integer patientId) throws PatientException{
 		
 		Patient patient = patientService.getpatientById(patientId);
 		return new ResponseEntity<Patient>(patient,HttpStatus.OK);
 	}
-	@GetMapping("getAllPatients/all")
+	@GetMapping("/getAllPatients/all")
 	public ResponseEntity<List<Patient>> getAllPatientsHandler()throws PatientException{
 		
 		List<Patient> list = patientService.getAllPatients();
 		return new ResponseEntity<List<Patient>>(list,HttpStatus.OK);
 	}
-	@PutMapping("updatePatientDetails/{id}")
-	public ResponseEntity<Patient> updatePatientHandler(@RequestBody Patient patient,@PathVariable("id") Integer patientId)throws PatientException{
+	@PutMapping("/updatePatientDetails")
+	public ResponseEntity<Patient> updatePatientHandler(@RequestBody Patient patient)throws PatientException{
 		
-		Patient updated = patientService.updatePatient(patient, patientId);
+		Patient updated = patientService.updatePatient(patient);
 		return new ResponseEntity<Patient>(updated,HttpStatus.OK);
 	}
-	@DeleteMapping("deletePatientDetails/{id}")
+	@DeleteMapping("/deletePatientDetails/{id}")
 	public ResponseEntity<Patient> deletePatientHandler(@PathVariable("id") Integer patientId)throws PatientException{
 		
 		Patient foundPatient = patientService.getpatientById(patientId);
