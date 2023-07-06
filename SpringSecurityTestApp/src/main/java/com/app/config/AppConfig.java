@@ -49,7 +49,7 @@ public class AppConfig {
 		.addFilterBefore(new JwtTokenValidatorFilter(), BasicAuthenticationFilter.class)
 		.authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
 				.requestMatchers("/swagger-ui*/**","/v3/api-docs/**").permitAll()
-				.requestMatchers(HttpMethod.POST, "/patient/signUp").permitAll().anyRequest().authenticated())
+				.requestMatchers("/patient/signUp").permitAll().anyRequest().authenticated())
 		.formLogin()
 		.and()
 		.httpBasic();
