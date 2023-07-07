@@ -96,7 +96,13 @@ public class PatientServiceImpl implements PatientService{
 			throw new PatientException("Not found");
 		}
 		else {
-			Patient updated = patientRepository.save(patient);
+			Patient found = opt.get();
+			found.setName(patient.getName());
+			found.setEmail(patient.getEmail());
+			found.setContactNo(patient.getContactNo());
+			found.setAddress(patient.getAddress());
+			found.setPincode(patient.getPincode());
+			Patient updated = patientRepository.save(found);
 			return updated;
 		}
 	}
@@ -112,7 +118,6 @@ public class PatientServiceImpl implements PatientService{
 			return patient;
 		}
 	}
-
 	
 
 	

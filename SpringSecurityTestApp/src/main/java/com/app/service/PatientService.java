@@ -20,4 +20,5 @@ public interface PatientService {
 	public Patient updatePatient(Patient patient)throws PatientException;
 	
 	public Patient deletePatient(Patient patient)throws PatientException;
+	
 }

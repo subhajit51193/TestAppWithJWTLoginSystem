@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +18,7 @@ import com.app.exception.PatientException;
 import com.app.model.Patient;
 import com.app.service.PatientService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+
 
 @RestController
 @RequestMapping("/admin")
@@ -26,14 +27,8 @@ public class AdminController {
 	@Autowired
 	private PatientService patientService;
 	
-//	@PostMapping("/add")
-//	public ResponseEntity<Patient> addPatienthandler(@RequestBody Patient patient){
-//		
-//		Patient newPatient = patientService.registerPatient(patient);
-//		return new ResponseEntity<Patient>(newPatient,HttpStatus.CREATED);
-//	}
-	@GetMapping("/getPatientDetails")
-	public ResponseEntity<Patient> getPatientDetailshandler(@PathVariable("id") Integer patientId) throws PatientException{
+	@GetMapping("/getPatientDetails/{patientId}")
+	public ResponseEntity<Patient> getPatientDetailshandler(@PathVariable("patientId") Integer patientId) throws PatientException{
 		
 		Patient patient = patientService.getpatientById(patientId);
 		return new ResponseEntity<Patient>(patient,HttpStatus.OK);
@@ -57,4 +52,5 @@ public class AdminController {
 		Patient deletedPatient = patientService.deletePatient(foundPatient);
 		return new ResponseEntity<Patient>(deletedPatient,HttpStatus.OK);
 	}
+	
 }
