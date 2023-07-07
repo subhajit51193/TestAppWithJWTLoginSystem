@@ -53,7 +53,7 @@ Not yet deployed
 
 ## Demo
 
-In progress...
+https://drive.google.com/file/d/1nX190xMbuqa5Zry8KSnVLjZkyCU0rmeL/view?usp=sharing
 
 ## Tech Stack
 
